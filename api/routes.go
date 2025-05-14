@@ -1,7 +1,8 @@
 package api
 
 import (
-	"net/http"
+	"path/filepath"
+	"runtime"
 	"github.com/gin-gonic/gin"
 	"userprofile-api/controllers"
 )
@@ -10,17 +11,16 @@ import (
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
 	
-	// Root handler to help with navigation
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Welcome to User Profile API",
-			"version": "1.0",
-			"endpoints": []string{
-				"/api/v1/users - Get all users",
-				"/api/v1/users/:id - Get user by ID",
-			},
-		})
-	})
+	// Get the absolute path to the templates directory
+	_, b, _, _ := runtime.Caller(0)
+	basePath := filepath.Dir(filepath.Dir(b))
+	templatesPath := filepath.Join(basePath, "templates/*")
+	
+	// Setup template rendering
+	router.LoadHTMLGlob(templatesPath)
+	
+	// Root handler shows a nice HTML table of all users
+	router.GET("/", controllers.HomePageHandler)
 	
 	// API version group
 	v1 := router.Group("/api/v1")

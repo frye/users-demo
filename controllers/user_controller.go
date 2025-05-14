@@ -15,6 +15,14 @@ var users = []models.UserProfile{
 	{ID: "3", FullName: "Robert Johnson", Emoji: "🎸"},
 }
 
+// HomePageHandler renders a HTML page displaying users in a table
+func HomePageHandler(c *gin.Context) {
+	log.Println("GET / endpoint called")
+	c.HTML(http.StatusOK, "users.html", gin.H{
+		"Users": users,
+	})
+}
+
 // GetUsers returns all users
 func GetUsers(c *gin.Context) {
 	log.Println("GET /api/v1/users endpoint called")
