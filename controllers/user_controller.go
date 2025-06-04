@@ -81,17 +81,4 @@ func UpdateUser(c *gin.Context) {
 	c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 }
 
-// DeleteUser removes a user by ID
-func DeleteUser(c *gin.Context) {
-	id := c.Param("id")
-	
-	for i, user := range users {
-		if user.ID == id {
-			users = append(users[:i], users[i+1:]...)
-			c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
-			return
-		}
-	}
-	
-	c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
-}
+// DeleteUser removes a user by ID TODO
